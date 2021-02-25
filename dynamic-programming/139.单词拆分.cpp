@@ -3,7 +3,9 @@
  *
  * [139] 单词拆分
  */
+
 #include "head.h"
+using namespace std;
 // @lc code=start
 class Solution {
  public:
