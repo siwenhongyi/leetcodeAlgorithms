@@ -7,15 +7,6 @@
 #include "head.h"
 using namespace std;
 // @lc code=start
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
 class Solution {
  public:
   void dfs(TreeNode* r, TreeNode*& pre, int lr) {

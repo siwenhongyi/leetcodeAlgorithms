@@ -5,7 +5,6 @@
  */
 #include "head.h"
 // @lc code=start
-
 class U {
  private:
   vector<int> parent;
@@ -26,7 +25,6 @@ class U {
   }
   bool query(int x, int y) { return find(x) == find(y); }
 };
-
 class Solution {
  public:
   int minimumEffortPath(vector<vector<int>>& heights) {

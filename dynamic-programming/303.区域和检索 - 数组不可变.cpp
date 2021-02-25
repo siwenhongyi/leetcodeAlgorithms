@@ -3,7 +3,6 @@
  *
  * [303] 区域和检索 - 数组不可变
  */
-
 #include "head.h"
 using namespace std;
 // @lc code=start
@@ -19,10 +18,8 @@ class NumArray {
       q[i + 1] = q[i] + p[i];
     }
   }
-
   int sumRange(int i, int j) { return q[j + 1] - q[i]; }
 };
-
 /**
  * Your NumArray object will be instantiated and called as such:
  * NumArray* obj = new NumArray(nums);

@@ -3,7 +3,6 @@
  *
  * [1110] 删点成林
  */
-
 #include "head.h"
 using namespace std;
 // @lc code=start
@@ -19,13 +18,11 @@ class Solution {
       dt(root->left);
       dt(root->right);
     }
-
     if (root->left && book[root->left->val]) {
       if (root->left->left) res.push_back(root->left->left);
       if (root->left->right) res.push_back(root->left->right);
       root->left = NULL;
     }
-
     if (root->right && book[root->right->val]) {
       if (root->right->left) res.push_back(root->right->left);
       if (root->right->right) res.push_back(root->right->right);
@@ -46,5 +43,4 @@ class Solution {
     return res;
   }
 };
-
 // @lc code=end

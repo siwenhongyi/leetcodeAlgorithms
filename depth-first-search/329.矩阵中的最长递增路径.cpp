@@ -3,13 +3,11 @@
  *
  * [329] 矩阵中的最长递增路径
  */
-
 #include "head.h"
 using namespace std;
 // @lc code=start
 int fx[4] = {0, 1, 0, -1};
 int fy[4] = {1, 0, -1, 0};
-
 class Solution {
  private:
   int m, n;
@@ -37,12 +35,9 @@ class Solution {
     vector<vector<int>> v(m, vector<int>(n, 0));
     pos = matrix;
     book.swap(v);
-
     for (int i = 0; i < m; i++)
       for (int j = 0; j < n; j++) res = max(res, DFS(i, j));
-
     return res;
   }
 };
-
 // @lc code=end

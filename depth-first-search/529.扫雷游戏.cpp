@@ -10,7 +10,6 @@ using namespace std;
 using PII = pair<int, int>;
 
 const int fx[] = {-1, -1, -1, 0, 1, 1, 1, 0};
-
 const int fy[] = {-1, 0, 1, 1, 1, 0, -1, -1};
 
 class Solution {

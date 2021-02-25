@@ -3,7 +3,6 @@
  *
  * [703] 数据流中的第 K 大元素
  */
-
 #include "head.h"
 using namespace std;
 // @lc code=start
@@ -17,7 +16,6 @@ class KthLargest {
     this->k = k;
     pre = -1;
   }
-
   int add(int val) {
     if (pre == -1) {
       num.push_back(val);
@@ -33,5 +31,4 @@ class KthLargest {
     }
   }
 };
-
 // @lc code=end

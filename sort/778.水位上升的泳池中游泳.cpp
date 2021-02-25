@@ -25,7 +25,6 @@ class U {
   }
   bool query(int x, int y) { return find(x) == find(y); }
 };
-
 class Solution {
  public:
   int swimInWater(vector<vector<int>>& grid) {
