@@ -7,23 +7,31 @@
 using namespace std;
 // @lc code=start
 class BSTIterator {
+ private:
+  using PTI = pair<TreeNode*, int>;
+  stack<PTI> q;
+
  public:
-  vector<int> x;
-  int index, n;
-  void dfs(TreeNode* r) {
-    if (!r) return;
-    if (r->left) dfs(r->left);
-    x.push_back(r->val);
-    if (r->right) dfs(r->right);
-  }
   BSTIterator(TreeNode* root) {
-    dfs(root);
-    index = 0;
-    n = x.size();
+    if (root) q.emplace(root, 0);
   }
   /** @return the next smallest number */
-  int next() { return x[index++]; }
+  int next() {
+    while (q.size()) {
+      auto&& [root, type] = q.top();
+      if (type == 0) {
+        type = 1;
+        if (root->left) q.push({root->left, 0});
+      } else {
+        TreeNode* temp = root;
+        q.pop();
+        if (temp->right) q.emplace(temp->right, 0);
+        return temp->val;
+      }
+    }
+    return -1;
+  }
   /** @return whether we have a next smallest number */
-  bool hasNext() { return index < n; }
+  bool hasNext() { return !q.empty(); }
 };
 // @lc code=end
