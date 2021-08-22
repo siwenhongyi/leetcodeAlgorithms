@@ -37,6 +37,7 @@ class Solution {
     iter = s.end() - 1;
     while (s.size() > 0 && *iter == ' ') iter = s.erase(iter) - 1;
     auto it = s.find_first_of('e');
+    if (it == string::npos) it = s.find_first_of('E');
     bool l, r;
     if (it == 0) return false;
     if (it != s.npos) {
