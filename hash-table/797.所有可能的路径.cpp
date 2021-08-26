@@ -8,7 +8,7 @@
 using namespace std;
 // @lc code=start
 class Solution {
- public:
+ private:
   int n;
   vector<vector<int>> res, edge;
   vector<int> path;
@@ -25,6 +25,8 @@ class Solution {
     }
     path.pop_back();
   }
+
+ public:
   vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
     n = graph.size();
     visi.resize(n, true);
