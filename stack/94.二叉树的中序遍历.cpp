@@ -7,18 +7,37 @@
 #include "head.h"
 using namespace std;
 // @lc code=start
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
+ */
 class Solution {
  public:
-  vector<int> res;
-  void dfs(TreeNode* r) {
-    if (!r) return;
-    if (r->left) dfs(r->left);
-    res.push_back(r->val);
-    if (r->right) dfs(r->right);
-  }
   vector<int> inorderTraversal(TreeNode* root) {
-    if (!root) return res;
-    dfs(root);
+    if (!root) return {};
+    vector<int> res;
+    stack<TreeNode*> st;
+    TreeNode* curr = root;
+    while (curr || st.size()) {
+      while (curr) {
+        st.push(curr);
+        curr = curr->left;
+      }
+      if (st.size()) {
+        curr = st.top();
+        res.push_back(curr->val);
+        st.pop();
+        curr = curr->right;
+      }
+    }
     return res;
   }
 };
