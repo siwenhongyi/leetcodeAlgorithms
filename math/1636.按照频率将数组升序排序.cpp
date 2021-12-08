@@ -7,9 +7,10 @@
 #include "head.h"
 using namespace std;
 // @lc code=start
-typedef pair<int, int> PII;
-
 class Solution {
+ private:
+  using PII = pair<int, int>;
+
  public:
   vector<int> frequencySort(vector<int>& nums) {
     if (nums.empty()) return {};
@@ -18,7 +19,7 @@ class Solution {
     map<int, int> pos;
     for (auto& it : nums) pos[it]++;
     for (auto& it : pos) t.push_back(it);
-    sort(t.begin(), t.end(), [](const PII& s, const PII& t) {
+    sort(t.begin(), t.end(), [](const auto& s, const auto& t) {
       if (s.second != t.second) return s.second < t.second;
       return s.first > t.first;
     });
