@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include <algorithm>
+#include <array>
 #include <bitset>
 #include <iostream>
 #include <map>
@@ -19,7 +20,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-
 // my
 
 #include "LeetCode_func.h"
