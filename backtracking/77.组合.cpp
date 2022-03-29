@@ -10,22 +10,23 @@ using namespace std;
 class Solution {
  private:
   vector<vector<int>> res;
-  void dfs(vector<int>& path, int st, const int& n, const int& k) {
+  vector<int> path;
+  void dfs(int st, const int& n, const int& k) {
+    if (path.size() + n - st + 1 < k) return;
     if (path.size() == k) {
       res.push_back(path);
       return;
     }
-    if (k - path.size() <= n - st) dfs(path, st + 1, n, k);
     path.push_back(st);
-    dfs(path, st + 1, n, k);
+    dfs(st + 1, n, k);
     path.pop_back();
+    dfs(st + 1, n, k);
     return;
   }
 
  public:
   vector<vector<int>> combine(int n, int k) {
-    vector<int> path;
-    dfs(path, 1, n, k);
+    dfs(1, n, k);
     return res;
   }
 };
