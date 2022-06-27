@@ -7,51 +7,81 @@
 using namespace std;
 // @lc code=start
 // 动态开点 线段树
-struct Node {
-  int v, lz, ls, rs;
-  Node() : v(0), lz(0), ls(0), rs(0) {}
-};
 class SegTree {
-  vector<Node> tr;
-  // 最大右边界
-  int cnt;
-  void push_down(int p, int len) {
-    if (!tr[p].ls) tr[p].ls = ++cnt, tr.emplace_back(Node{});
-    if (!tr[p].rs) tr[p].rs = ++cnt, tr.emplace_back(Node{});
-    if (!tr[p].lz) return;
-    int lz = tr[p].lz;
-    tr[tr[p].ls].v = lz;
-    tr[tr[p].rs].v = lz;
-    tr[tr[p].ls].lz = tr[tr[p].rs].lz = lz;
-    tr[p].lz = 0;
+ private:
+  using ll = long long;
+  static const ll N = INT32_MAX;
+  struct SegNode {
+    // 左右子树节点下标
+    // 不存储具体的 区间起点结束点
+    ll l, r;
+    ll lazy, value;
+    /* data */
+    SegNode() : l(0), r(0), lazy(0), value(0) {}
+    void check() {
+      cout << l << ' ' << r << ' ' << lazy << ' ' << value << endl;
+    }
+  };
+  vector<SegNode> nodes;
+  ll cnt;
+  // 除了根节点 不建树 使用的时候再建
+  void push_up(ll i) {
+    auto&& curr = nodes[i];
+    curr.value = max(nodes[curr.l].value, nodes[curr.r].value);
   }
-  void push_up(int p) { tr[p].v = max(tr[tr[p].ls].v, tr[tr[p].rs].v); }
+  // 节点i的修改向下传递，len为传递区间宽度
+  void push_down(ll i, ll len) {
+    if (!nodes[i].l) {
+      nodes[i].l = cnt++;
+      nodes.emplace_back(SegNode{});
+    }
+    if (!nodes[i].r) {
+      nodes[i].r = cnt++;
+      nodes.emplace_back(SegNode{});
+    }
+    auto& curr = nodes[i];
+    if (!curr.lazy) return;
+    nodes[curr.l].value = nodes[curr.r].value = curr.lazy;
+    nodes[curr.l].lazy = nodes[curr.r].lazy = curr.lazy;
+    curr.lazy = 0;
+  }
 
  public:
-  SegTree() : tr(1), cnt(0) {}
+  SegTree() : cnt(1), nodes(1) {}
+  void check() {
+    for (auto& it : nodes) it.check();
+  }
+  // 更新区间(L,R), 当前节点的线段区间是(l,r)
+  void update(ll l, ll r, ll L, ll R, ll v, ll i = 0) {
+    // //无交集
+    // if (L > r || R < l) return;
 
-  // 树险段区间 更新区间 L,R
-  void modify(int l, int r, int L, int R, int v, int p = 0) {
-    // 树区间完全包含更新区间更新 结束
+    // 节点区间包含更新区间，直接更新
     if (l <= L && r >= R) {
-      // lz=v 表示 子区间 下次需要更新
-      tr[p].lz = v, tr[p].v = v;
+      // lazy如果不能保证更新时和为0 应该变为+= 且做额外处理防止子节点多次更新
+      nodes[i].value = nodes[i].lazy = v;
       return;
     }
-    int mid = (L + R - 1) / 2;
-    push_down(p, R - L + 1);
-    if (mid >= l) modify(l, r, L, mid, v, tr[p].ls);
-    if (mid < r) modify(l, r, mid + 1, R, v, tr[p].rs);
-    push_up(p);
+    // 有交集
+    ll mm = (L + R - 1) / 2;
+    push_down(i, R - L + 1);
+    if (mm >= l) update(l, r, L, mm, v, nodes[i].l);
+    if (mm < r) update(l, r, mm + 1, R, v, nodes[i].r);
+    push_up(i);
   }
 
-  int query(int l, int r, int L, int R, int p = 0) {
-    if (l <= L && r >= R) return tr[p].v;
-    int mid = (L + R - 1) / 2, ret = 0;
-    push_down(p, R - L + 1);
-    if (mid >= l) ret = max(ret, query(l, r, L, mid, tr[p].ls));
-    if (mid < r) ret = max(ret, query(l, r, mid + 1, R, tr[p].rs));
-    return ret;
+  ll query(ll l, ll r, ll L, ll R, ll i = 0) {
+    // //无交集
+    // if (L > r || R < l) return 0;
+    // 节点区间包含更新区间
+    if (L >= l && R <= r) return nodes[i].value;
+    // 先更新
+    ll res = 0;
+    ll mm = (L + R - 1) / 2;
+    push_down(i, R - L + 1);
+    if (mm >= l) res = max(res, query(l, r, L, mm, nodes[i].l));
+    if (mm < r) res = max(res, query(l, r, mm + 1, R, nodes[i].r));
+    return res;
   }
 };
 
@@ -59,32 +89,46 @@ class Solution {
   const int N = INT32_MAX;
 
  public:
-  vector<vector<int>> getSkyline(
-      vector<vector<int>>& buildings) {  //动态开点线段树
-    sort(begin(buildings), end(buildings),
-         [&](const auto& a, const auto& b) { return a[2] < b[2]; });
-    SegTree tr;
-    vector<int> points;
-    for (auto& building : buildings) {
-      int l = building[0], r = building[1], v = building[2];
+  vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
+    auto&& cmp = [&](const vector<int>& s, const vector<int>& t) {
+      return s[2] < t[2];
+    };
+    sort(buildings.begin(), buildings.end(), cmp);
+    vector<vector<int>> res;
+    vector points(0, 0);
+    SegTree se;
+    for (const auto& it : buildings) {
+      int l = it[0], r = it[1], v = it[2];
       points.push_back(l);
       points.push_back(r);
-      tr.modify(l, r - 1, 1, N, v);
+      se.update(l, r - 1, 1, N, v);
     }
-    sort(begin(points), end(points));
+    // se.check();
+    sort(points.begin(), points.end());
     points.erase(unique(begin(points), end(points)), end(points));
-    vector<vector<int>> ans;
-    for (int i = 1; i < points.size(); i++) {
-      int q = tr.query(points[i - 1], points[i] - 1, 1, N);
-      int j = i + 1;
-      while (j < points.size() &&
-             tr.query(points[j - 1], points[j] - 1, 1, N) == q)
-        j++;
-      ans.push_back({points[i - 1], q});
+    auto&& n = points.size();
+    for (int i = 1, j; i < n; i++) {
+      int qa = se.query(points[i - 1], points[i] - 1, 1, N);
+      j = i + 1;
+      while (j < n && se.query(points[j - 1], points[j] - 1, 1, N) == qa) j++;
+      res.push_back({points[i - 1], qa});
       i = j - 1;
     }
-    ans.push_back({points.back(), 0});
-    return ans;
+    res.push_back({points.back(), 0});
+    return res;
   }
 };
+
 // @lc code=end
+//测试
+int main() {
+  Solution s;
+  vector<vector<int>> buildings = {
+      {2, 9, 10}, {3, 7, 15}, {5, 12, 12}, {15, 20, 10}, {19, 24, 8}};
+  vector<vector<int>> res = s.getSkyline(buildings);
+  cout << "res\n";
+  for (const auto& it : res) {
+    cout << it[0] << ' ' << it[1] << endl;
+  }
+  return 0;
+}
