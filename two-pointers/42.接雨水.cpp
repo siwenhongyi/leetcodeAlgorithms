@@ -3,7 +3,7 @@
  *
  * [42] 接雨水
  */
-#include "head.h"
+#include <bits/stdc++.h>
 using namespace std;
 // @lc code=start
 class Solution {
