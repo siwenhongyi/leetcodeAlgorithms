@@ -15,12 +15,12 @@ class Solution {
   using node = tuple<int, int, int, int>;
   // 右 下 顺转 逆转 左 上
   // 头坐标不同移动变化方式
-  static constexpr array fxh{0, 1, 1, -1, 0, -1}, fyh{1, 0, -1, 1, -1, 0};
+  static constexpr array fxh{0, 1, 1, -1}, fyh{1, 0, -1, 1};
   // 尾坐标不同的编号方式
-  static constexpr array fxt{0, 1, 0, 0, 0, -1}, fyt{1, 0, 0, 0, -1, 0};
+  static constexpr array fxt{0, 1, 0, 0}, fyt{1, 0, 0, 0};
 
  public:
-  int minimumMoves(vector<vector<int>>& g) {
+  int minimumMoves(vector<vector<int>> &g) {
     int res = -1, n = g.size();
     set<node> v;
     queue<ti> q;
