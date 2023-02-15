@@ -7,46 +7,49 @@
 #include "head.h"
 using namespace std;
 // @lc code=start
-#define maxn 65535
-struct Node {
-  int x, y;
-} node[26];
 class Solution {
+  using pii = pair<int, int>;
+  map<char, pii> pos;
+
  public:
   string alphabetBoardPath(string target) {
-    int x = 0, y = 0;
+    int row, col;
     for (int i = 0; i < 26; i++) {
-      node[i].x = x;
-      node[i].y = y++;
-      if (y > 4) {
-        x++;
-        y = 0;
-      }
+      row = i / 5, col = i % 5;
+      pos['a' + i] = {row, col};
     }
-    int nx = 0, ny = 0;
-    int fx, fy;
-    string res;
-    for (unsigned int i = 0; i < target.size(); i++) {
-      int flag = 0;
-      x = target[i] - 'a';
-      fx = node[x].x - nx;
-      fy = node[x].y - ny;
-      if (fx != 0) {
-        char c = fx > 0 ? 'D' : 'U';
-        for (int j = 0; j < abs(fx); j++) res.push_back(c);
+    row = col = 0;
+    string res, a, b;
+    int shu_c, heng_c;
+    for (auto& c : target) {
+      auto&& [x, y] = pos[c];
+      a.clear(), b.clear();
+      auto shu_c = row - x, heng_c = col - y;
+      while (shu_c > 0) {
+        a.push_back('U');
+        shu_c--;
       }
-      if (x == 25 && ny != 0) {
-        flag = 1;
-        res.pop_back();
+      while (shu_c < 0) {
+        shu_c++;
+        a.push_back('D');
       }
-      if (fy != 0) {
-        char c = fy > 0 ? 'R' : 'L';
-        for (int j = 0; j < abs(fy); j++) res.push_back(c);
+      while (heng_c > 0) {
+        b.push_back('L');
+        heng_c--;
       }
-      if (flag) res.push_back('D');
+      while (heng_c < 0) {
+        heng_c++;
+        b.push_back('R');
+      }
+      if (c == 'z') {
+        res += b;
+        res += a;
+      } else {
+        res += a;
+        res += b;
+      }
       res.push_back('!');
-      nx = node[x].x;
-      ny = node[x].y;
+      row = x, col = y;
     }
     return res;
   }
