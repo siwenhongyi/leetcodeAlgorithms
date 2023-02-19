@@ -9,21 +9,6 @@ struct TreeNode {
   TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-class Node {
- public:
-  int val;
-  Node *left;
-  Node *right;
-  Node *next;
-
-  Node() : val(0), left(NULL), right(NULL), next(NULL) {}
-
-  Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
-
-  Node(int _val, Node *_left, Node *_right, Node *_next)
-      : val(_val), left(_left), right(_right), next(_next) {}
-};
-
 struct ListNode {
   int val;
   ListNode *next;
@@ -55,6 +40,23 @@ vector<int> stringToIntegerVector(string input) {
   char delim = ',';
   while (getline(ss, item, delim)) {
     output.push_back(stoi(item));
+  }
+  return output;
+}
+
+vector<vector<int>> stringToVectorIntegerVector(string input) {
+  vector<vector<int>> output;
+  trimLeftTrailingSpaces(input);
+  trimRightTrailingSpaces(input);
+  input = input.substr(1, input.length() - 2);
+  int pre = 0, index = 0;
+  for (auto &it : input) {
+    if (it == ']') {
+      output.push_back(
+          stringToIntegerVector(input.substr(pre, index - pre + 1)));
+      pre = index + 2;
+    }
+    index++;
   }
   return output;
 }
@@ -100,6 +102,21 @@ string stringToString(string input) {
     }
   }
   return result;
+}
+
+vector<string> stringToStringVector(string input) {
+  vector<string> output;
+  trimLeftTrailingSpaces(input);
+  trimRightTrailingSpaces(input);
+  input = input.substr(1, input.length() - 2);
+  stringstream ss;
+  ss.str(input);
+  string item;
+  char delim = ',';
+  while (getline(ss, item, delim)) {
+    output.push_back(stringToString(item));
+  }
+  return output;
 }
 
 ListNode *stringToListNode(string input) {
@@ -163,3 +180,12 @@ TreeNode *stringToTreeNode(string input) {
 }
 
 string boolToString(bool input) { return input ? "True" : "False"; }
+
+void checkIntegerVector(const vector<int> &res) {
+  for (auto &it : res) cout << it << ' ';
+  cout << endl;
+}
+
+void checkIntegerVectorVector(const vector<vector<int>> &res) {
+  for (const auto &it : res) checkIntegerVector(it);
+}
