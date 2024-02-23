@@ -15,7 +15,8 @@ package main
  *     Right *TreeNode
  * }
  */
-func build(preorder []int, pl, pr int, postorder []int, sl, sr int, index map[int]int) *TreeNode {
+ 
+func constructFromPrePost_build(preorder []int, pl, pr int, postorder []int, sl, sr int, index map[int]int) *TreeNode {
 	if pl >= pr {
 		return nil
 	}
@@ -29,8 +30,8 @@ func build(preorder []int, pl, pr int, postorder []int, sl, sr int, index map[in
 	nextRootIndex := index[nextRootVal]
 	leftSize := nextRootIndex - sl + 1
 
-	root.Left = build(preorder, pl+1, pl+leftSize+1, postorder, sl, nextRootIndex+1, index)
-	root.Right = build(preorder, pl+leftSize+1, pr, postorder, nextRootIndex+1, pr-1, index)
+	root.Left = constructFromPrePost_build(preorder, pl+1, pl+leftSize+1, postorder, sl, nextRootIndex+1, index)
+	root.Right = constructFromPrePost_build(preorder, pl+leftSize+1, pr, postorder, nextRootIndex+1, pr-1, index)
 	return root
 }
 
@@ -40,7 +41,7 @@ func constructFromPrePost(preorder []int, postorder []int) *TreeNode {
 	for idx, v := range postorder {
 		index[v] = idx
 	}
-	return build(preorder, 0, len(preorder), postorder, 0, len(postorder), index)
+	return constructFromPrePost_build(preorder, 0, len(preorder), postorder, 0, len(postorder), index)
 }
 
 // @lc code=end

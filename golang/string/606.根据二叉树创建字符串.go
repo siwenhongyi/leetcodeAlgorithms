@@ -17,14 +17,15 @@ import "strconv"
  *     Right *TreeNode
  * }
  */
-var res string
+
+var res606 string
 
 func treeToStr(root *TreeNode) {
 	if root == nil {
-		res += "()"
+		res606 += "()"
 		return
 	}
-	res += "(" + strconv.Itoa(root.Val)
+	res606 += "(" + strconv.Itoa(root.Val)
 	if root.Left == nil && root.Right == nil {
 	} else if root.Left != nil && root.Right != nil {
 		treeToStr(root.Left)
@@ -32,19 +33,18 @@ func treeToStr(root *TreeNode) {
 	} else if root.Right == nil {
 		treeToStr(root.Left)
 	} else {
-		res += "()"
+		res606 += "()"
 		treeToStr(root.Right)
 	}
-	res += ")"
+	res606 += ")"
 }
 
 func tree2str(root *TreeNode) string {
 	if root == nil {
 		return "()"
 	}
-	res = ""
+	res606 = ""
 	treeToStr(root)
-	return res[1 : len(res)-1]
+	return res606[1 : len(res606)-1]
 }
-
 // @lc code=end

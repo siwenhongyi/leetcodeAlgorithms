@@ -15,7 +15,7 @@ package main
  * }
  */
 
- func levelOrder(root *Node) [][]int {
+func levelOrder(root *Node) [][]int {
 	var res [][]int
 	if root == nil {
 		return res
@@ -37,5 +37,5 @@ package main
 	}
 	return res
 }
-// @lc code=end
 
+// @lc code=end

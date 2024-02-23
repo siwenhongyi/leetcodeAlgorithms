@@ -15,9 +15,9 @@ package main
  * }
  */
 
- var res []int
+ var res590 []int
 
- func dfs(root *Node) {
+ func postorderdfs(root *Node) {
      if root == nil {
          return
      }
@@ -29,7 +29,7 @@ package main
 
 func postorder(root *Node) []int {
     res = make([]int, 0)
-    dfs(root)
+    postorderdfs(root)
     return res
 }
 // @lc code=end
