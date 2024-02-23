@@ -1,3 +1,5 @@
+package main
+
 /*
  * @lc app=leetcode.cn id=889 lang=golang
  *
@@ -13,7 +15,7 @@
  *     Right *TreeNode
  * }
  */
- func build(preorder []int, pl, pr int, postorder []int, sl, sr int, index map[int]int) *TreeNode {
+func build(preorder []int, pl, pr int, postorder []int, sl, sr int, index map[int]int) *TreeNode {
 	if pl >= pr {
 		return nil
 	}
@@ -42,4 +44,3 @@ func constructFromPrePost(preorder []int, postorder []int) *TreeNode {
 }
 
 // @lc code=end
-

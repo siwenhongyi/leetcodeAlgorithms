@@ -1,3 +1,11 @@
+package main
+
+import (
+	"sort"
+	"strconv"
+	"strings"
+)
+
 /*
  * @lc app=leetcode.cn id=179 lang=golang
  *
@@ -17,11 +25,11 @@ func largestNumber(nums []int) string {
 	for _, v := range num {
 		res += v
 	}
-    res = strings.TrimLeft(res, "0")
+	res = strings.TrimLeft(res, "0")
 	if res == "" {
-        res = "0"
-    }
-    return res
+		res = "0"
+	}
+	return res
 }
 
 // @lc code=end

@@ -1,3 +1,7 @@
+package main
+
+import "strconv"
+
 /*
  * @lc app=leetcode.cn id=606 lang=golang
  *
@@ -13,7 +17,7 @@
  *     Right *TreeNode
  * }
  */
- var res string
+var res string
 
 func treeToStr(root *TreeNode) {
 	if root == nil {
@@ -43,6 +47,4 @@ func tree2str(root *TreeNode) string {
 	return res[1 : len(res)-1]
 }
 
-
 // @lc code=end
-
