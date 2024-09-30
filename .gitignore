@@ -1,4 +1,5 @@
 .vscode/*
+cmake-build-debug/*
 .idea/
 date.txt
 data.txt
